@@ -1,0 +1,4 @@
+bin/
+p2psite-demo/
+*.key
+p2psite-demo.log

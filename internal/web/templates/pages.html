@@ -1,0 +1,96 @@
+{{define "home.html"}}{{template "head" .}}
+<header class="boardbanner"><h1>{{.Manifest.Network}}</h1><p class="boarddesc">A serverless imageboard. Every member's node keeps a full copy and serves it to the others.</p></header>
+<hr>
+<section class="box">
+  <h2>Boards</h2>
+  <ul class="boards">
+    {{range .Manifest.Boards}}<li><a href="/{{.ID}}/">/{{.ID}}/ - {{.Title}}</a>{{if .Description}} <span class="muted">{{.Description}}</span>{{end}}</li>{{end}}
+  </ul>
+</section>
+{{if .Manifest.Rules}}
+<section class="box">
+  <h2>Rules</h2>
+  <p>{{nl2br .Manifest.Rules}}</p>
+</section>
+{{end}}
+<section class="box">
+  <h2>Stats</h2>
+  {{with .Data}}<p>{{.Threads}} threads · {{.Posts}} posts · {{.Tombstones}} deletions · {{$.Peers}} peers connected</p>{{end}}
+</section>
+{{template "foot" .}}{{end}}
+
+{{define "index.html"}}{{template "head" .}}
+{{template "postform" (form . "")}}
+<hr>
+<nav class="boardnav">[<a href="/{{.Board.ID}}/catalog">Catalog</a>]</nav>
+<hr>
+{{range .Data.Threads}}
+<div class="thread">
+  {{template "post" (pc $ .OP true true)}}
+  {{if .Omitted}}<span class="omitted">{{.Omitted}} repl{{if eq .Omitted 1}}y{{else}}ies{{end}}{{if .OmittedImages}} and {{.OmittedImages}} image{{if ne .OmittedImages 1}}s{{end}}{{end}} omitted. <a href="/{{$.Board.ID}}/thread/{{.OP.ID}}">Click here</a> to view.</span>{{end}}
+  {{range .Replies}}{{template "post" (pc $ . false false)}}{{end}}
+</div>
+<hr>
+{{else}}
+<p class="empty">No threads yet. Start the first one above.</p>
+<hr>
+{{end}}
+<nav class="pages">{{range $i, $_ := .Data.Pages}}{{if eq $i $.Data.Page}}[<b>{{add $i 1}}</b>] {{else}}[<a href="/{{$.Board.ID}}/?page={{$i}}">{{add $i 1}}</a>] {{end}}{{end}} <a href="/{{.Board.ID}}/catalog">Catalog</a></nav>
+{{template "foot" .}}{{end}}
+
+{{define "catalog.html"}}{{template "head" .}}
+<nav class="boardnav">[<a href="/{{.Board.ID}}/">Return</a>] <span class="muted">Sorted by bump order</span></nav>
+<hr>
+<div class="catalog">
+{{range .Data}}{{if .OP}}
+  <a class="catitem" href="/{{.OP.Board}}/thread/{{.OP.ID}}">
+    {{with .OP.Image}}<img src="/blob/{{.ThumbCID}}" alt="image still downloading">{{else}}<span class="noimg">no image</span>{{end}}
+    <span class="meta">R: <b>{{.ReplyCount}}</b> / I: <b>{{.ImageCount}}</b></span>
+    <span class="teaser">{{if .OP.Subject}}<b>{{.OP.Subject}}</b>: {{end}}{{snippet .OP.Body 120}}</span>
+  </a>
+{{end}}{{else}}<p class="empty">No threads yet.</p>{{end}}
+</div>
+{{template "foot" .}}{{end}}
+
+{{define "thread.html"}}{{template "head" .}}
+<nav class="boardnav">[<a href="/{{.Board.ID}}/">Return</a>] [<a href="/{{.Board.ID}}/catalog">Catalog</a>] [<a href="#bottom">Bottom</a>]</nav>
+<hr>
+{{with .Data}}
+<div class="thread">
+  {{template "post" (pc $ .OP true false)}}
+  {{range .Replies}}{{template "post" (pc $ . false false)}}{{end}}
+</div>
+<p class="threadstats" id="bottom">{{.ReplyCount}} repl{{if eq .ReplyCount 1}}y{{else}}ies{{end}} · {{.ImageCount}} image{{if ne .ImageCount 1}}s{{end}}{{if .BumpLimitHit}} · <b>bump limit reached</b>{{end}}</p>
+<hr>
+<h2 class="formtitle">Reply to this thread</h2>
+{{template "postform" (form $ .OP.ID)}}
+{{end}}
+{{template "foot" .}}{{end}}
+
+{{define "error.html"}}{{template "head" .}}
+<section class="box error">
+  <h2>Something went wrong</h2>
+  <p>{{.Data}}</p>
+  <p>[<a href="/">Home</a>]</p>
+</section>
+{{template "foot" .}}{{end}}
+
+{{define "status.html"}}{{template "head" .}}
+<header class="boardbanner"><h1>Node status</h1></header>
+<hr>
+{{with .Data}}
+<section class="box">
+  <h2>This node</h2>
+  <table class="kv">
+    <tr><th>Peer ID</th><td><code>{{.PeerID}}</code></td></tr>
+    <tr><th>Manifest</th><td>sequence {{.Seq}}</td></tr>
+    <tr><th>Content</th><td>{{.Stats.Threads}} threads · {{.Stats.Posts}} posts · {{.Stats.Tombstones}} deletions · images {{.BlobSize}}</td></tr>
+  </table>
+  <h3>Addresses other members can connect to</h3>
+  <ul class="mono">{{range .Addrs}}<li>{{.}}</li>{{end}}</ul>
+  <h3>Connected members ({{len .Peers}})</h3>
+  <ul class="mono">{{range .Peers}}<li>{{.}}</li>{{else}}<li>none yet. Discovery keeps looking every 30 seconds.</li>{{end}}</ul>
+  <p class="muted">{{.AllConns}} connections in total, including public DHT nodes used for discovery.</p>
+</section>
+{{end}}
+{{template "foot" .}}{{end}}

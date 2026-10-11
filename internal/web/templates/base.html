@@ -1,0 +1,83 @@
+{{define "head"}}<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{if .Title}}{{.Title}} - {{end}}{{.Manifest.Network}}</title>
+<link rel="stylesheet" href="/static/style.css">
+<script src="/static/app.js" defer></script>
+</head>
+<body>
+<nav class="boardlist">
+  <span>[{{range $i, $b := .Manifest.Boards}}{{if $i}} / {{end}}<a href="/{{$b.ID}}/" title="{{$b.Title}}">{{$b.ID}}</a>{{end}}]</span>
+  <span class="navright">[<a href="/">Home</a>] [<a href="/status">Node</a>]</span>
+</nav>
+{{if .Board.ID}}
+<header class="boardbanner">
+  <h1>/{{.Board.ID}}/ - {{.Board.Title}}</h1>
+  {{if .Board.Description}}<p class="boarddesc">{{.Board.Description}}</p>{{end}}
+</header>
+<hr>
+{{end}}
+{{end}}
+
+{{define "foot"}}
+<hr>
+<footer class="footer">
+  <p>{{.Manifest.Network}} · peer-to-peer · {{.Peers}} peer{{if ne .Peers 1}}s{{end}} connected{{if .Mod}} · <b>moderator mode</b>{{end}}</p>
+  <p>All posts are signed and checked by every node. No server, no tracking, no third-party code.</p>
+</footer>
+</body>
+</html>
+{{end}}
+
+{{define "postform"}}
+<form class="postform" action="/{{.Board.ID}}/post" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="csrf" value="{{.CSRF}}">
+  {{if .Thread}}<input type="hidden" name="thread" value="{{.Thread}}">{{end}}
+  <table>
+    <tr><th><label for="f-name">Name</label></th><td><input id="f-name" name="name" placeholder="Anonymous" maxlength="50" autocomplete="off"></td></tr>
+    <tr><th><label for="f-options">Options</label></th><td><input id="f-options" name="options" placeholder="sage" maxlength="20" autocomplete="off"></td></tr>
+    {{if not .Thread}}<tr><th><label for="f-subject">Subject</label></th><td><input id="f-subject" name="subject" maxlength="100" autocomplete="off"></td></tr>{{end}}
+    <tr><th><label for="f-body">Comment</label></th><td><textarea id="f-body" name="body" rows="5" maxlength="{{.MaxChars}}"></textarea></td></tr>
+    <tr><th><label for="f-file">File</label></th><td><input id="f-file" type="file" name="file" accept="image/jpeg,image/png,image/gif,image/webp"{{if and (not .Thread) .ImageRequired}} required{{end}}></td></tr>
+    <tr><th></th><td><button type="submit">{{if .Thread}}Post reply{{else}}Create thread{{end}}</button> <span class="hint">Signing takes a second.</span></td></tr>
+  </table>
+  <ul class="rules">
+    <li>Max image size {{.MaxImage}}. JPG, PNG, GIF and WebP. Metadata is removed.</li>
+    <li>Formatting: <code>&gt;greentext</code>, <code>&gt;&gt;id</code>, <code>[spoiler]</code>, <code>[code]</code>.</li>
+  </ul>
+</form>
+{{end}}
+
+{{define "file"}}
+{{with .Image}}
+<div class="fileinfo">File: <a href="/blob/{{.CID}}" target="_blank" rel="noopener">{{filename .}}</a> ({{size .Size}}, {{.Width}}x{{.Height}})</div>
+<a class="thumb" href="/blob/{{.CID}}" target="_blank" rel="noopener"><img src="/blob/{{.ThumbCID}}" alt="image still downloading"></a>
+{{end}}
+{{end}}
+
+{{define "post"}}
+{{$p := .Post}}
+<div class="post {{if .OP}}op{{else}}reply{{end}}" id="p{{short $p.ID}}" data-id="{{short $p.ID}}">
+  {{if .OP}}{{template "file" $p}}{{end}}
+  <div class="postinfo">
+    {{if $p.Subject}}<span class="subject">{{$p.Subject}}</span>{{end}}
+    <span class="name">{{name $p}}</span>
+    <span class="posterid" title="Poster ID in this thread">(ID: {{poster $p}})</span>
+    {{if $p.Sage}}<span class="sage">sage</span>{{end}}
+    <span class="date">{{time $p.Time}}</span>
+    <a class="postnum" href="/{{$p.Board}}/thread/{{$p.ThreadID}}#p{{short $p.ID}}" data-quote="{{short $p.ID}}">No.{{short $p.ID}}</a>
+    {{if .Link}}<span class="replylink">[<a href="/{{$p.Board}}/thread/{{$p.ID}}">Reply</a>]</span>{{end}}
+    {{if .Mod}}
+    <form class="modform" action="/mod/delete" method="post">
+      <input type="hidden" name="csrf" value="{{.CSRF}}"><input type="hidden" name="id" value="{{$p.ID}}">
+      <input name="reason" placeholder="reason" maxlength="200" aria-label="Delete reason">
+      <button type="submit">Delete</button>
+    </form>
+    {{end}}
+  </div>
+  {{if not .OP}}{{template "file" $p}}{{end}}
+  <blockquote class="body">{{body $p.Body $p.Board}}</blockquote>
+</div>
+{{end}}

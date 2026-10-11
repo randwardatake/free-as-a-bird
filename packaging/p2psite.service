@@ -1,0 +1,33 @@
+# systemd user service. Install with:
+#   cp packaging/p2psite.service ~/.config/systemd/user/
+#   systemctl --user daemon-reload
+#   systemctl --user enable --now p2psite
+[Unit]
+Description=p2psite peer-to-peer imageboard node
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=%h/.local/bin/p2psite serve
+Restart=on-failure
+RestartSec=5
+
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/.local/share/p2psite
+PrivateTmp=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictNamespaces=yes
+RestrictRealtime=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged @resources
+MemoryMax=300M
+
+[Install]
+WantedBy=default.target
