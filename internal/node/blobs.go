@@ -10,8 +10,8 @@ import (
 	"github.com/libp2p/go-libp2p/core/network"
 	"github.com/libp2p/go-libp2p/core/peer"
 
-	"github.com/randwardatake/p2psite/internal/blob"
-	"github.com/randwardatake/p2psite/internal/board"
+	"github.com/randwardatake/free-as-a-bird/internal/blob"
+	"github.com/randwardatake/free-as-a-bird/internal/board"
 )
 
 // The blob protocol fetches one image or thumbnail by CID. The requester

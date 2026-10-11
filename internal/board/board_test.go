@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/randwardatake/p2psite/internal/keys"
-	"github.com/randwardatake/p2psite/internal/manifest"
+	"github.com/randwardatake/free-as-a-bird/internal/keys"
+	"github.com/randwardatake/free-as-a-bird/internal/manifest"
 )
 
 const testCID = "bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy"

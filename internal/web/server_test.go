@@ -16,9 +16,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/randwardatake/p2psite/internal/keys"
-	"github.com/randwardatake/p2psite/internal/manifest"
-	"github.com/randwardatake/p2psite/internal/node"
+	"github.com/randwardatake/free-as-a-bird/internal/keys"
+	"github.com/randwardatake/free-as-a-bird/internal/manifest"
+	"github.com/randwardatake/free-as-a-bird/internal/node"
 )
 
 const addr = "127.0.0.1:8099"

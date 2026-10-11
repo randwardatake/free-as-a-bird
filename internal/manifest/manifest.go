@@ -15,13 +15,13 @@ import (
 	"fmt"
 	"regexp"
 
-	"github.com/randwardatake/p2psite/internal/keys"
+	"github.com/randwardatake/free-as-a-bird/internal/keys"
 )
 
 // MaxSize is the largest encoded manifest a node will parse.
 const MaxSize = 256 << 10
 
-const signingDomain = "p2psite/manifest/v1\n"
+const signingDomain = "free-as-a-bird/manifest/v1\n"
 
 var (
 	networkRe = regexp.MustCompile(`^[a-z0-9][a-z0-9-]{0,31}$`)
@@ -53,7 +53,7 @@ type Limits struct {
 	OPImageRequired bool  `json:"op_image_required"`
 }
 
-// DefaultLimits are used by `p2psite manifest new`.
+// DefaultLimits are used by `free-as-a-bird manifest new`.
 var DefaultLimits = Limits{
 	PoWBits:         20,
 	MaxImageBytes:   2 << 20,

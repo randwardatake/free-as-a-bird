@@ -1,6 +1,6 @@
 # Lands
 
-A **land** is one person's own site or API inside p2psite: their corner of the
+A **land** is one person's own site or API inside free-as-a-bird: their corner of the
 network, addressed by a name like `randward.freeasabird`. Joining a node does
 not require a land — a member can just seed other people's posts and lands.
 Anyone who wants one claims a name and hosts a service behind it.
@@ -15,8 +15,8 @@ A land is owned by a key, not by a person or a node. Everything is derived on
 the owner's own device from one randomly generated **master secret**, so the
 land key is never tied to the node key, the poster secret, or an IP address.
 
-    land_secret  = HKDF(master_secret, "", "p2psite/land/v1", 32)   -> ed25519
-    land_onion   = HKDF(master_secret, "", "p2psite/land-route/v1", 32) -> X25519
+    land_secret  = HKDF(master_secret, "", "free-as-a-bird/land/v1", 32)   -> ed25519
+    land_onion   = HKDF(master_secret, "", "free-as-a-bird/land-route/v1", 32) -> X25519
 
 The land key signs the land's records. The route key is the land's static
 X25519 key for the `ROUTING.md` handshake; it is derived separately so one key
@@ -94,7 +94,7 @@ address per `(visitor, land)` pair and passes it to the local service as a
 `Forwarded: for="[...]"` header, from the ULA range `fd00::/8`:
 
     vip = fd00::/8 || HKDF(land_secret, visitor_route_pub,
-                          "p2psite/visitor-vip/v1", ...)
+                          "free-as-a-bird/visitor-vip/v1", ...)
 
 The visitor proves ownership of `visitor_route_pub` during the circuit
 handshake. So the same visitor is stable within one land, while two different

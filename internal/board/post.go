@@ -17,13 +17,13 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/randwardatake/p2psite/internal/keys"
-	"github.com/randwardatake/p2psite/internal/manifest"
+	"github.com/randwardatake/free-as-a-bird/internal/keys"
+	"github.com/randwardatake/free-as-a-bird/internal/manifest"
 )
 
 const (
-	postDomain      = "p2psite/post/v1\n"
-	tombstoneDomain = "p2psite/tombstone/v1\n"
+	postDomain      = "free-as-a-bird/post/v1\n"
+	tombstoneDomain = "free-as-a-bird/tombstone/v1\n"
 
 	// MaxPostSize bounds an encoded post on the wire.
 	MaxPostSize = 64 << 10

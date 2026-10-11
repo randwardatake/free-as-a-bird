@@ -1,21 +1,21 @@
 # systemd user service. Install with:
-#   cp packaging/p2psite.service ~/.config/systemd/user/
+#   cp packaging/free-as-a-bird.service ~/.config/systemd/user/
 #   systemctl --user daemon-reload
-#   systemctl --user enable --now p2psite
+#   systemctl --user enable --now free-as-a-bird
 [Unit]
-Description=p2psite peer-to-peer imageboard node
+Description=free-as-a-bird peer-to-peer imageboard node
 After=network-online.target
 Wants=network-online.target
 
 [Service]
-ExecStart=%h/.local/bin/p2psite serve
+ExecStart=%h/.local/bin/free-as-a-bird serve
 Restart=on-failure
 RestartSec=5
 
 NoNewPrivileges=yes
 ProtectSystem=strict
 ProtectHome=read-only
-ReadWritePaths=%h/.local/share/p2psite
+ReadWritePaths=%h/.local/share/free-as-a-bird
 PrivateTmp=yes
 ProtectKernelTunables=yes
 ProtectKernelModules=yes

@@ -1,10 +1,10 @@
 .PHONY: build demo test fuzz vuln lint clean
 
 build:
-	go build -trimpath -o bin/p2psite ./cmd/p2psite
+	go build -trimpath -o bin/free-as-a-bird ./cmd/free-as-a-bird
 
 demo:
-	go run ./cmd/p2psite demo
+	go run ./cmd/free-as-a-bird demo
 
 test:
 	go test -race -count=1 ./...
@@ -24,4 +24,4 @@ lint:
 	go vet ./...
 
 clean:
-	rm -rf bin p2psite-demo
+	rm -rf bin free-as-a-bird-demo

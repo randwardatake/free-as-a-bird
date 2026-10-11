@@ -10,8 +10,8 @@ import (
 	"github.com/libp2p/go-libp2p/core/network"
 	"github.com/libp2p/go-libp2p/core/peer"
 
-	"github.com/randwardatake/p2psite/internal/board"
-	"github.com/randwardatake/p2psite/internal/manifest"
+	"github.com/randwardatake/free-as-a-bird/internal/board"
+	"github.com/randwardatake/free-as-a-bird/internal/manifest"
 )
 
 // The sync protocol is request/response, one request per stream. It lets a

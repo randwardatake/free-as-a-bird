@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/randwardatake/p2psite/internal/route"
+	"github.com/randwardatake/free-as-a-bird/internal/route"
 )
 
 // A visitor builds a two-relay circuit (visitor -> R1 -> R2) and exchanges

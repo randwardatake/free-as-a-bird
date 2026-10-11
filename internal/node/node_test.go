@@ -14,10 +14,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/randwardatake/p2psite/internal/board"
-	"github.com/randwardatake/p2psite/internal/keys"
-	"github.com/randwardatake/p2psite/internal/manifest"
-	"github.com/randwardatake/p2psite/internal/media"
+	"github.com/randwardatake/free-as-a-bird/internal/board"
+	"github.com/randwardatake/free-as-a-bird/internal/keys"
+	"github.com/randwardatake/free-as-a-bird/internal/manifest"
+	"github.com/randwardatake/free-as-a-bird/internal/media"
 )
 
 type testNet struct {

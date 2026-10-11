@@ -32,15 +32,15 @@ import (
 
 // memberTag protects connections to members from the connection manager,
 // which would otherwise trim them in favour of public DHT peers.
-const memberTag = "p2psite-member"
+const memberTag = "free-as-a-bird-member"
 
 // rendezvous is the key members advertise under. It is derived from the
 // manifest, so only people holding the manifest can look it up, and the
 // public DHT only ever sees its hash.
 func (n *Node) rendezvous() string {
 	p := n.Manifest().Payload
-	h := sha256.Sum256([]byte("p2psite/rendezvous/v1\n" + p.Network + "\n" + p.Rendezvous))
-	return "p2psite/" + hex.EncodeToString(h[:16])
+	h := sha256.Sum256([]byte("free-as-a-bird/rendezvous/v1\n" + p.Network + "\n" + p.Rendezvous))
+	return "free-as-a-bird/" + hex.EncodeToString(h[:16])
 }
 
 func (n *Node) isMember(p peer.ID) bool {
@@ -133,7 +133,7 @@ func (n *Node) startDiscovery() error {
 		go n.connect(ai)
 	}
 	if n.cfg.MDNS {
-		svc := mdns.NewMdnsService(n.host, "p2psite-"+n.Manifest().Payload.Network, mdnsNotifee{n})
+		svc := mdns.NewMdnsService(n.host, "free-as-a-bird-"+n.Manifest().Payload.Network, mdnsNotifee{n})
 		if err := svc.Start(); err != nil {
 			n.log.Warn("mDNS unavailable", "err", err)
 		}
@@ -146,7 +146,7 @@ func (n *Node) startDiscovery() error {
 		}
 		var err error
 		n.dht, err = dht.New(n.host,
-			dht.ProtocolPrefix(protocol.ID("/p2psite/"+n.Manifest().Payload.Network)),
+			dht.ProtocolPrefix(protocol.ID("/free-as-a-bird/"+n.Manifest().Payload.Network)),
 			dht.Mode(mode),
 			dht.BootstrapPeers(n.bootstrapPeers()...),
 		)

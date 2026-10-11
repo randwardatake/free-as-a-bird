@@ -8,8 +8,8 @@ import (
 	pubsub "github.com/libp2p/go-libp2p-pubsub"
 	"github.com/libp2p/go-libp2p/core/peer"
 
-	"github.com/randwardatake/p2psite/internal/board"
-	"github.com/randwardatake/p2psite/internal/manifest"
+	"github.com/randwardatake/free-as-a-bird/internal/board"
+	"github.com/randwardatake/free-as-a-bird/internal/manifest"
 )
 
 // joinTopics subscribes to the manifest, tombstone and per-board topics.

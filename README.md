@@ -1,4 +1,4 @@
-# p2psite
+# free-as-a-bird
 
 A serverless, peer-to-peer imageboard for small communities.
 
@@ -16,7 +16,7 @@ no requests outside your node.
 Requires Go 1.27 or newer (see `go.mod`).
 
 ```sh
-make demo        # or: go run ./cmd/p2psite demo
+make demo        # or: go run ./cmd/free-as-a-bird demo
 ```
 
 This starts three nodes in one process, connected in a line
@@ -36,25 +36,25 @@ Things to try:
 - Delete a post on node 1. It disappears from all nodes, image included.
 - Stop the demo (Ctrl+C) and start it again. Everything is still there.
 
-Demo data lives in `./p2psite-demo`. Delete that folder to start over.
+Demo data lives in `./free-as-a-bird-demo`. Delete that folder to start over.
 
 ## Running a real network
 
 ### 1. Maintainers create the network once
 
 ```sh
-p2psite keygen maintainer.key          # prints the maintainer public key
-p2psite keygen moderator.key           # prints the moderator public key
+free-as-a-bird keygen maintainer.key          # prints the maintainer public key
+free-as-a-bird keygen moderator.key           # prints the moderator public key
 
-p2psite manifest new -network linuxnet \
+free-as-a-bird manifest new -network linuxnet \
   -board 'linux:Linux & Free Software:Distros, desktops, kernels.' \
   -board 'dev:Programming' -board 'sec:Security & Privacy' -board 'meta:Meta' \
   -maintainer <MAINTAINER_PUBKEY> -moderator <MODERATOR_PUBKEY> \
   -bootstrap /ip4/<HUB_PUBLIC_IP>/udp/4001/quic-v1/p2p/<HUB_PEER_ID> \
   -rules-file rules.txt -out manifest.json
 
-p2psite manifest sign -key maintainer.key manifest.json
-p2psite manifest verify manifest.json
+free-as-a-bird manifest sign -key maintainer.key manifest.json
+free-as-a-bird manifest verify manifest.json
 ```
 
 Share `manifest.json` with every member. Keep the `.key` files private.
@@ -65,8 +65,8 @@ With several maintainers, pass `-maintainer` once per key and set
 ### 2. Every member
 
 ```sh
-p2psite init -manifest manifest.json
-p2psite serve
+free-as-a-bird init -manifest manifest.json
+free-as-a-bird serve
 ```
 
 Then open http://127.0.0.1:8088/. No addresses are needed: nodes find each
@@ -103,7 +103,7 @@ it passes posts and images on like any other member. Its relay only helps
 two NAT'd members punch a direct connection; it never carries their traffic.
 
 ```sh
-p2psite serve -hub -port 4001
+free-as-a-bird serve -hub -port 4001
 ```
 
 Its address appears on the node status page (`/status`). Add hub addresses
@@ -113,9 +113,9 @@ seen, so the network keeps working even if every hub goes away.
 ### Updating the manifest
 
 ```sh
-p2psite manifest bump manifest.json      # edit the file, then:
-p2psite manifest sign -key maintainer.key manifest.json
-p2psite serve -publish-manifest manifest.json
+free-as-a-bird manifest bump manifest.json      # edit the file, then:
+free-as-a-bird manifest sign -key maintainer.key manifest.json
+free-as-a-bird serve -publish-manifest manifest.json
 ```
 
 The update spreads to every node. Nodes accept it only with a higher
@@ -124,7 +124,7 @@ sequence number and a threshold of signatures from the current maintainers.
 ### Moderating
 
 ```sh
-p2psite serve -mod-key moderator.key
+free-as-a-bird serve -mod-key moderator.key
 ```
 
 Delete buttons appear next to each post. A deletion is a signed tombstone:
@@ -135,24 +135,24 @@ were offline.
 ## Commands
 
 ```
-p2psite demo     [-dir DIR] [-nodes N]       run N local nodes with sample content
-p2psite keygen   FILE                        create a signing key, print its public key
-p2psite manifest new|sign|bump|verify        create and sign the network manifest
-p2psite init     -manifest FILE [-data DIR]  set up a node data directory
-p2psite serve    [flags]                     run a node and the local web UI
+free-as-a-bird demo     [-dir DIR] [-nodes N]       run N local nodes with sample content
+free-as-a-bird keygen   FILE                        create a signing key, print its public key
+free-as-a-bird manifest new|sign|bump|verify        create and sign the network manifest
+free-as-a-bird init     -manifest FILE [-data DIR]  set up a node data directory
+free-as-a-bird serve    [flags]                     run a node and the local web UI
 ```
 
 Useful `serve` flags: `-web 127.0.0.1:8088`, `-port 4001`, `-hub`,
 `-bootstrap ADDR`, `-mdns=false`, `-dht=false`, `-public-discovery=false`,
 `-mod-key FILE`, `-v`.
-The default data directory is `~/.local/share/p2psite`.
+The default data directory is `~/.local/share/free-as-a-bird`.
 
 ## Development
 
 ```sh
 make test        # unit and integration tests with the race detector
 make fuzz        # fuzz the parsers for 30 s each
-make build       # ./bin/p2psite
+make build       # ./bin/free-as-a-bird
 ```
 
 Documentation:

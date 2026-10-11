@@ -24,11 +24,11 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/randwardatake/p2psite/internal/blob"
-	"github.com/randwardatake/p2psite/internal/board"
-	"github.com/randwardatake/p2psite/internal/manifest"
-	"github.com/randwardatake/p2psite/internal/media"
-	"github.com/randwardatake/p2psite/internal/node"
+	"github.com/randwardatake/free-as-a-bird/internal/blob"
+	"github.com/randwardatake/free-as-a-bird/internal/board"
+	"github.com/randwardatake/free-as-a-bird/internal/manifest"
+	"github.com/randwardatake/free-as-a-bird/internal/media"
+	"github.com/randwardatake/free-as-a-bird/internal/node"
 )
 
 //go:embed templates/*.html

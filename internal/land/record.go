@@ -13,8 +13,8 @@ import (
 
 	"github.com/libp2p/go-libp2p/core/peer"
 
-	"github.com/randwardatake/p2psite/internal/keys"
-	"github.com/randwardatake/p2psite/internal/manifest"
+	"github.com/randwardatake/free-as-a-bird/internal/keys"
+	"github.com/randwardatake/free-as-a-bird/internal/manifest"
 )
 
 // MaxRecordSize is the largest encoded registration a node will parse.
@@ -23,7 +23,7 @@ const MaxRecordSize = 16 << 10
 // MaxIntro is the most introduction points a route descriptor may list.
 const MaxIntro = 8
 
-const signingDomain = "p2psite/land-record/v1\n"
+const signingDomain = "free-as-a-bird/land-record/v1\n"
 
 // labelRe matches one DNS label, since a land is served at
 // <name>.<group>.localhost.

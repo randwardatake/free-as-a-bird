@@ -9,7 +9,7 @@ import (
 	"github.com/libp2p/go-libp2p/p2p/protocol/circuitv2/client"
 	ma "github.com/multiformats/go-multiaddr"
 
-	"github.com/randwardatake/p2psite/internal/board"
+	"github.com/randwardatake/free-as-a-bird/internal/board"
 )
 
 // A member reached only through a relay must not stall blob downloads:

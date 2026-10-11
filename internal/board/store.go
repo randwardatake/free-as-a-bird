@@ -13,7 +13,7 @@ import (
 
 	bolt "go.etcd.io/bbolt"
 
-	"github.com/randwardatake/p2psite/internal/manifest"
+	"github.com/randwardatake/free-as-a-bird/internal/manifest"
 )
 
 var (
@@ -77,7 +77,7 @@ type Result struct {
 func Open(path string, m *manifest.Payload) (*Store, error) {
 	db, err := bolt.Open(path, 0o600, &bolt.Options{Timeout: 2 * time.Second})
 	if err != nil {
-		return nil, fmt.Errorf("open %s: %w (is another p2psite running on this data dir?)", path, err)
+		return nil, fmt.Errorf("open %s: %w (is another free-as-a-bird running on this data dir?)", path, err)
 	}
 	s := &Store{
 		db: db, m: m,

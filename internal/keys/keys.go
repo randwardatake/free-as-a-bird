@@ -115,7 +115,7 @@ func LoadOrCreate(path string) (ed25519.PrivateKey, error) {
 // and salt always give the same key, so a poster keeps one ID within a
 // thread, while keys in different threads cannot be linked to each other.
 func ThreadKey(secret ed25519.PrivateKey, threadSalt []byte) ed25519.PrivateKey {
-	r := hkdf.New(sha256.New, secret.Seed(), threadSalt, []byte("p2psite/thread-key/v1"))
+	r := hkdf.New(sha256.New, secret.Seed(), threadSalt, []byte("free-as-a-bird/thread-key/v1"))
 	seed := make([]byte, ed25519.SeedSize)
 	if _, err := io.ReadFull(r, seed); err != nil {
 		panic(err) // hkdf only fails when asked for too much output

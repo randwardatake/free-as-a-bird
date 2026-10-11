@@ -25,11 +25,11 @@ import (
 	"golang.org/x/image/font/basicfont"
 	"golang.org/x/image/math/fixed"
 
-	"github.com/randwardatake/p2psite/internal/board"
-	"github.com/randwardatake/p2psite/internal/keys"
-	"github.com/randwardatake/p2psite/internal/manifest"
-	"github.com/randwardatake/p2psite/internal/media"
-	"github.com/randwardatake/p2psite/internal/node"
+	"github.com/randwardatake/free-as-a-bird/internal/board"
+	"github.com/randwardatake/free-as-a-bird/internal/keys"
+	"github.com/randwardatake/free-as-a-bird/internal/manifest"
+	"github.com/randwardatake/free-as-a-bird/internal/media"
+	"github.com/randwardatake/free-as-a-bird/internal/node"
 )
 
 const demoRules = `1. English only.
@@ -41,7 +41,7 @@ const demoRules = `1. English only.
 // network can be tried on one machine.
 func cmdDemo(args []string) error {
 	fs := flag.NewFlagSet("demo", flag.ExitOnError)
-	dir := fs.String("dir", "p2psite-demo", "directory for demo keys and node data")
+	dir := fs.String("dir", "free-as-a-bird-demo", "directory for demo keys and node data")
 	count := fs.Int("nodes", 3, "number of nodes (2-9)")
 	webBase := fs.Int("web-port", 8081, "web UI port of the first node; the others count up")
 	p2pBase := fs.Int("p2p-port", 4101, "peer port of the first node; the others count up")
@@ -99,7 +99,7 @@ func cmdDemo(args []string) error {
 		}
 	}
 
-	fmt.Printf("\n  p2psite demo is running with %d nodes (Ctrl+C to stop)\n\n", *count)
+	fmt.Printf("\n  free-as-a-bird demo is running with %d nodes (Ctrl+C to stop)\n\n", *count)
 	for i := range *count {
 		role := ""
 		switch i {

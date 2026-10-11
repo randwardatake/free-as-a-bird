@@ -11,7 +11,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/randwardatake/p2psite/internal/board"
+	"github.com/randwardatake/free-as-a-bird/internal/board"
 )
 
 func frame(declared uint64, body []byte) *bufio.Reader {

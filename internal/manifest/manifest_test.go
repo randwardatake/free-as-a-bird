@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/randwardatake/p2psite/internal/keys"
+	"github.com/randwardatake/free-as-a-bird/internal/keys"
 )
 
 func newKeys(t *testing.T, n int) []ed25519.PrivateKey {

@@ -97,8 +97,8 @@ func TestParsePhraseRejects(t *testing.T) {
 func TestDerivationKnownAnswer(t *testing.T) {
 	m := &Master{secret: make([]byte, 32)}
 	const (
-		wantLandSeed  = "d587ea12f17a36d76e9dab8ce9ba33e75ef2672626f175cb788f1e5488b21f8a"
-		wantRouteSeed = "099a2452caf7f2fd9e237484032e440b6911986473719331c7dd9f88d4d4b2bf"
+		wantLandSeed  = "fd685e05f9f5ec2f863010974d2c0a8a228f528604a8c00697316d1142fb5715"
+		wantRouteSeed = "53507b1f0553de6d926f55842cd732b4e764054e8b0175a0c828a21ef11772c2"
 	)
 	if got := hex.EncodeToString(m.LandKey().Seed()); got != wantLandSeed {
 		t.Errorf("land seed = %s, want %s", got, wantLandSeed)

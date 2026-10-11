@@ -20,7 +20,7 @@
 | `internal/route`    | Onion-routing crypto: X25519 derivation, ntor handshake, cells  |
 | `internal/node`     | libp2p host, discovery, GossipSub, sync and blob protocols       |
 | `internal/web`      | Imageboard HTML frontend                                         |
-| `cmd/p2psite`       | CLI and the local demo                                          |
+| `cmd/free-as-a-bird`       | CLI and the local demo                                          |
 
 ## Replication model
 
@@ -68,12 +68,12 @@ never mix.
 
 | Name                                 | Kind          | Purpose                           |
 |--------------------------------------|---------------|-----------------------------------|
-| `/p2psite/<net>/v1/board/<id>`       | GossipSub     | new posts                         |
-| `/p2psite/<net>/v1/tombstones`       | GossipSub     | moderator deletions               |
-| `/p2psite/<net>/v1/manifest`         | GossipSub     | manifest updates                  |
-| `/p2psite/<net>/sync/1.0.0`          | stream        | catch-up after being offline      |
-| `/p2psite/<net>/blob/1.0.0`          | stream        | fetch one image by CID            |
-| `/p2psite/<net>/kad/1.0.0`           | Kademlia DHT  | find peers of this network        |
+| `/free-as-a-bird/<net>/v1/board/<id>`       | GossipSub     | new posts                         |
+| `/free-as-a-bird/<net>/v1/tombstones`       | GossipSub     | moderator deletions               |
+| `/free-as-a-bird/<net>/v1/manifest`         | GossipSub     | manifest updates                  |
+| `/free-as-a-bird/<net>/sync/1.0.0`          | stream        | catch-up after being offline      |
+| `/free-as-a-bird/<net>/blob/1.0.0`          | stream        | fetch one image by CID            |
+| `/free-as-a-bird/<net>/kad/1.0.0`           | Kademlia DHT  | find peers of this network        |
 
 GossipSub validators do the real work. A node stores a post before
 forwarding it, and only after every check passes. Invalid messages are
@@ -104,18 +104,18 @@ In order of preference:
    `peers.json`.
 2. **Bootstrap list**: from the manifest and `-bootstrap` flags.
 3. **mDNS**: members on the same LAN find each other with no configuration.
-4. **Network DHT**: a private Kademlia DHT (`/p2psite/<net>` prefix).
+4. **Network DHT**: a private Kademlia DHT (`/free-as-a-bird/<net>` prefix).
 5. **Public discovery** (`-public-discovery`, on by default): the node joins
    the public IPFS (Amino) DHT in client mode and advertises a provider record
    under a rendezvous key, then looks the key up to find other members.
 
-The rendezvous key is `sha256("p2psite/rendezvous/v1\n" + network + "\n" +
+The rendezvous key is `sha256("free-as-a-bird/rendezvous/v1\n" + network + "\n" +
 manifest.rendezvous)`. `manifest new` fills `rendezvous` with 16 random
 bytes, so the key cannot be guessed from the network name. The public DHT
 stores only a hash of it.
 
 Members are told apart from public DHT peers by checking whether they speak
-`/p2psite/<net>/sync/1.0.0`. Member connections are protected from the
+`/free-as-a-bird/<net>/sync/1.0.0`. Member connections are protected from the
 connection manager, and the UI counts only members.
 
 ### NAT traversal

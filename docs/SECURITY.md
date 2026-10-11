@@ -38,7 +38,7 @@ them. That is what "public" means. Private, encrypted boards are planned
 ## Known limitations
 
 - **DHT eclipse (GO-2024-3218).** The Kademlia DHT can be eclipsed by an
-  attacker who creates many node ids. There is no upstream fix. p2psite uses
+  attacker who creates many node ids. There is no upstream fix. free-as-a-bird uses
   the DHT only to find peers, never for content. The peer cache, bootstrap
   list and mDNS keep working without it, and `-dht=false` turns it off.
 - **Public discovery reveals IP addresses.** With `-public-discovery` on
@@ -50,7 +50,7 @@ them. That is what "public" means. Private, encrypted boards are planned
   addresses for a closed network.
 - **Gossip metadata.** The first peers to hear a post can guess which node
   sent it. Posts carry no node identity, but timing is visible to direct
-  neighbours. p2psite is not an anonymity network.
+  neighbours. free-as-a-bird is not an anonymity network.
 - **Timestamps are claimed by the poster** and only bounded to at most five
   minutes in the future. A poster can backdate a post.
 - **Moderation is trusted.** Any listed moderator can delete any post. Choose
@@ -60,7 +60,7 @@ them. That is what "public" means. Private, encrypted boards are planned
 
 ## Hardening the service
 
-`packaging/p2psite.service` runs the node as an unprivileged user service
+`packaging/free-as-a-bird.service` runs the node as an unprivileged user service
 with `NoNewPrivileges`, `ProtectSystem=strict`, `PrivateTmp`, a system-call
 filter and write access limited to the data directory.
 

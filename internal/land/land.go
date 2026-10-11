@@ -30,8 +30,8 @@ const (
 )
 
 const (
-	landInfo  = "p2psite/land/v1"
-	routeInfo = "p2psite/land-route/v1"
+	landInfo  = "free-as-a-bird/land/v1"
+	routeInfo = "free-as-a-bird/land-route/v1"
 )
 
 //go:embed english.txt

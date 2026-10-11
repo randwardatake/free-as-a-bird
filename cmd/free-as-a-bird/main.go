@@ -1,4 +1,4 @@
-// Command p2psite runs a node of a serverless, peer-to-peer imageboard.
+// Command free-as-a-bird runs a node of a serverless, peer-to-peer imageboard.
 package main
 
 import (
@@ -16,28 +16,28 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/randwardatake/p2psite/internal/keys"
-	"github.com/randwardatake/p2psite/internal/manifest"
-	"github.com/randwardatake/p2psite/internal/node"
-	"github.com/randwardatake/p2psite/internal/web"
+	"github.com/randwardatake/free-as-a-bird/internal/keys"
+	"github.com/randwardatake/free-as-a-bird/internal/manifest"
+	"github.com/randwardatake/free-as-a-bird/internal/node"
+	"github.com/randwardatake/free-as-a-bird/internal/web"
 )
 
 const version = "0.1.0"
 
-const usage = `p2psite - a serverless peer-to-peer imageboard
+const usage = `free-as-a-bird - a serverless peer-to-peer imageboard
 
 Usage:
-  p2psite demo     [-dir DIR] [-nodes N]       run N local nodes with sample content
-  p2psite keygen   FILE                        create a signing key, print its public key
-  p2psite manifest new    [flags] -out FILE    write an unsigned manifest
-  p2psite manifest sign   -key FILE  MANIFEST  add a maintainer signature
-  p2psite manifest bump   MANIFEST             raise the sequence number for an update
-  p2psite manifest verify MANIFEST             check a manifest's signatures
-  p2psite init     -manifest FILE [-data DIR]  set up a node data directory
-  p2psite serve    [flags]                     run a node and the local web UI
-  p2psite version
+  free-as-a-bird demo     [-dir DIR] [-nodes N]       run N local nodes with sample content
+  free-as-a-bird keygen   FILE                        create a signing key, print its public key
+  free-as-a-bird manifest new    [flags] -out FILE    write an unsigned manifest
+  free-as-a-bird manifest sign   -key FILE  MANIFEST  add a maintainer signature
+  free-as-a-bird manifest bump   MANIFEST             raise the sequence number for an update
+  free-as-a-bird manifest verify MANIFEST             check a manifest's signatures
+  free-as-a-bird init     -manifest FILE [-data DIR]  set up a node data directory
+  free-as-a-bird serve    [flags]                     run a node and the local web UI
+  free-as-a-bird version
 
-Run "p2psite <command> -h" for the flags of a command.
+Run "free-as-a-bird <command> -h" for the flags of a command.
 `
 
 func main() {
@@ -59,7 +59,7 @@ func main() {
 	case "serve":
 		err = cmdServe(args)
 	case "version", "-v", "--version":
-		fmt.Println("p2psite", version)
+		fmt.Println("free-as-a-bird", version)
 	case "help", "-h", "--help":
 		fmt.Print(usage)
 	default:
@@ -74,13 +74,13 @@ func main() {
 
 func defaultDataDir() string {
 	if d := os.Getenv("XDG_DATA_HOME"); d != "" {
-		return filepath.Join(d, "p2psite")
+		return filepath.Join(d, "free-as-a-bird")
 	}
 	home, err := os.UserHomeDir()
 	if err != nil {
-		return "p2psite-data"
+		return "free-as-a-bird-data"
 	}
-	return filepath.Join(home, ".local", "share", "p2psite")
+	return filepath.Join(home, ".local", "share", "free-as-a-bird")
 }
 
 type multiFlag []string
@@ -90,7 +90,7 @@ func (m *multiFlag) Set(s string) error { *m = append(*m, s); return nil }
 
 func cmdKeygen(args []string) error {
 	if len(args) != 1 {
-		return errors.New("usage: p2psite keygen FILE")
+		return errors.New("usage: free-as-a-bird keygen FILE")
 	}
 	sk, err := keys.Generate()
 	if err != nil {
@@ -105,7 +105,7 @@ func cmdKeygen(args []string) error {
 
 func cmdManifest(args []string) error {
 	if len(args) == 0 {
-		return errors.New("usage: p2psite manifest new|sign|bump|verify ...")
+		return errors.New("usage: free-as-a-bird manifest new|sign|bump|verify ...")
 	}
 	switch args[0] {
 	case "new":
@@ -183,7 +183,7 @@ func manifestNew(args []string) error {
 	if err := os.WriteFile(*out, s.Marshal(), 0o644); err != nil {
 		return err
 	}
-	fmt.Printf("wrote %s (unsigned). Next: p2psite manifest sign -key MAINTAINER.key %s\n", *out, *out)
+	fmt.Printf("wrote %s (unsigned). Next: free-as-a-bird manifest sign -key MAINTAINER.key %s\n", *out, *out)
 	return nil
 }
 
@@ -200,7 +200,7 @@ func manifestSign(args []string) error {
 	keyFile := fs.String("key", "", "maintainer key file (required)")
 	fs.Parse(args)
 	if *keyFile == "" || fs.NArg() != 1 {
-		return errors.New("usage: p2psite manifest sign -key FILE MANIFEST")
+		return errors.New("usage: free-as-a-bird manifest sign -key FILE MANIFEST")
 	}
 	sk, err := keys.Load(*keyFile)
 	if err != nil {
@@ -220,7 +220,7 @@ func manifestSign(args []string) error {
 
 func manifestBump(args []string) error {
 	if len(args) != 1 {
-		return errors.New("usage: p2psite manifest bump MANIFEST")
+		return errors.New("usage: free-as-a-bird manifest bump MANIFEST")
 	}
 	m, err := readManifest(args[0])
 	if err != nil {
@@ -238,7 +238,7 @@ func manifestBump(args []string) error {
 
 func manifestVerify(args []string) error {
 	if len(args) != 1 {
-		return errors.New("usage: p2psite manifest verify MANIFEST")
+		return errors.New("usage: free-as-a-bird manifest verify MANIFEST")
 	}
 	m, err := readManifest(args[0])
 	if err != nil {
@@ -258,7 +258,7 @@ func cmdInit(args []string) error {
 	data := fs.String("data", defaultDataDir(), "data directory")
 	fs.Parse(args)
 	if *mf == "" {
-		return errors.New("usage: p2psite init -manifest FILE [-data DIR]")
+		return errors.New("usage: free-as-a-bird init -manifest FILE [-data DIR]")
 	}
 	return initDataDir(*data, *mf)
 }

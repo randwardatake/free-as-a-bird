@@ -1,4 +1,4 @@
-// Package node runs the peer-to-peer side of p2psite: the libp2p host,
+// Package node runs the peer-to-peer side of free-as-a-bird: the libp2p host,
 // peer discovery, GossipSub for new posts, and the sync and blob protocols
 // that let nodes catch up after being offline.
 package node
@@ -28,10 +28,10 @@ import (
 	"github.com/libp2p/go-libp2p/p2p/host/autorelay"
 	"github.com/libp2p/go-libp2p/p2p/net/connmgr"
 
-	"github.com/randwardatake/p2psite/internal/blob"
-	"github.com/randwardatake/p2psite/internal/board"
-	"github.com/randwardatake/p2psite/internal/manifest"
-	"github.com/randwardatake/p2psite/internal/route"
+	"github.com/randwardatake/free-as-a-bird/internal/blob"
+	"github.com/randwardatake/free-as-a-bird/internal/board"
+	"github.com/randwardatake/free-as-a-bird/internal/manifest"
+	"github.com/randwardatake/free-as-a-bird/internal/route"
 )
 
 // Config controls how a node joins the network.
@@ -56,7 +56,7 @@ type Config struct {
 	Logger          *slog.Logger
 }
 
-// Node is a running p2psite peer.
+// Node is a running free-as-a-bird peer.
 type Node struct {
 	cfg    Config
 	log    *slog.Logger
@@ -104,11 +104,11 @@ const (
 )
 
 func (n *Node) proto(name string) protocol.ID {
-	return protocol.ID(fmt.Sprintf("/p2psite/%s/%s/1.0.0", n.Manifest().Payload.Network, name))
+	return protocol.ID(fmt.Sprintf("/free-as-a-bird/%s/%s/1.0.0", n.Manifest().Payload.Network, name))
 }
 
 func (n *Node) topicName(name string) string {
-	return fmt.Sprintf("/p2psite/%s/v1/%s", n.Manifest().Payload.Network, name)
+	return fmt.Sprintf("/free-as-a-bird/%s/v1/%s", n.Manifest().Payload.Network, name)
 }
 
 // LoadManifest reads the trusted manifest from a data directory.
@@ -116,7 +116,7 @@ func LoadManifest(dataDir string) (*manifest.Signed, error) {
 	b, err := os.ReadFile(filepath.Join(dataDir, ManifestFile))
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
-			return nil, fmt.Errorf("no manifest in %s: run `p2psite init` first", dataDir)
+			return nil, fmt.Errorf("no manifest in %s: run `free-as-a-bird init` first", dataDir)
 		}
 		return nil, err
 	}
@@ -253,7 +253,7 @@ func (n *Node) startHost() error {
 		libp2p.Identity(sk),
 		libp2p.ListenAddrStrings(listen...),
 		libp2p.ConnectionManager(cm),
-		libp2p.UserAgent("p2psite/0.1"),
+		libp2p.UserAgent("free-as-a-bird/0.1"),
 		libp2p.NATPortMap(),
 		libp2p.EnableHolePunching(),
 		libp2p.EnableRelay(),

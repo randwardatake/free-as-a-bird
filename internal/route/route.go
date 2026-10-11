@@ -1,4 +1,4 @@
-// Package route holds the pure cryptography of p2psite's own onion routing
+// Package route holds the pure cryptography of free-as-a-bird's own onion routing
 // layer: deriving a node's X25519 key from its ed25519 identity, the ntor
 // handshake that gives a circuit hop its forward and backward keys, the
 // fixed-size cell codec, and the onion wrap/unwrap used to send a cell
@@ -31,7 +31,7 @@ import (
 // gives the same route key.
 func DHKeyFromSeed(seed []byte) (*ecdh.PrivateKey, error) {
 	raw := make([]byte, 32)
-	if _, err := io.ReadFull(hkdf.New(sha256.New, seed, nil, []byte("p2psite/route-dh/v1")), raw); err != nil {
+	if _, err := io.ReadFull(hkdf.New(sha256.New, seed, nil, []byte("free-as-a-bird/route-dh/v1")), raw); err != nil {
 		return nil, err
 	}
 	return ecdh.X25519().NewPrivateKey(raw)
@@ -41,7 +41,7 @@ func DHKeyFromSeed(seed []byte) (*ecdh.PrivateKey, error) {
 // client an authenticated, forward-secret shared secret with a relay whose
 // static public key and id the client already knows from the land record or
 // peer record. We reimplement it here over crypto/ecdh.
-const protoID = "p2psite-route-1"
+const protoID = "free-as-a-bird-route-1"
 
 var (
 	tMac    = []byte(protoID + ":mac")
@@ -303,7 +303,7 @@ var sealNonce [chacha20poly1305.NonceSize]byte
 
 func sealKey(shared []byte) ([]byte, error) {
 	key := make([]byte, chacha20poly1305.KeySize)
-	_, err := io.ReadFull(hkdf.New(sha256.New, shared, nil, []byte("p2psite/route-seal/v1")), key)
+	_, err := io.ReadFull(hkdf.New(sha256.New, shared, nil, []byte("free-as-a-bird/route-seal/v1")), key)
 	return key, err
 }
 

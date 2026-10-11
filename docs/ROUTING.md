@@ -1,6 +1,6 @@
 # Routing
 
-p2psite's own multi-hop routing layer. It lets a visitor reach a land's
+free-as-a-bird's own multi-hop routing layer. It lets a visitor reach a land's
 service, and a land reach the network, without either side's node learning
 the other's IP address. It is built directly on libp2p streams. It is not
 Tor and borrows no Tor code; it reuses the circuit/onion idea, which is
@@ -24,7 +24,7 @@ and there is no shortcut to it.
 | Need | Reuse |
 |---|---|
 | Per-node long-term key | libp2p `node.key` (ed25519) |
-| Open a stream to a peer | `host.NewStream`, protocol `/p2psite/<net>/route/1.0.0` |
+| Open a stream to a peer | `host.NewStream`, protocol `/free-as-a-bird/<net>/route/1.0.0` |
 | List of online relays | `node.Members()` (peers speaking our sync protocol) |
 | Key derivation | HKDF-SHA256, as in `keys.ThreadKey` |
 | Spam cost | proof of work, as on posts |
@@ -36,7 +36,7 @@ X25519 key for Diffie-Hellman. We derive it from the node key with HKDF so
 no new key file is needed, and publish the X25519 public key in the peer's
 network record:
 
-    x25519_priv = HKDF(node_ed25519_seed, "", "p2psite/route-dh/v1", 32)
+    x25519_priv = HKDF(node_ed25519_seed, "", "free-as-a-bird/route-dh/v1", 32)
 
 ed25519 and X25519 use the same curve but we never reuse the signing key as
 a DH key directly: separate derivation, separate purpose.
@@ -108,7 +108,7 @@ the local service as a `Forwarded: for="[...]"` header, from the ULA range
 `fd00::/8`:
 
     vip = fd00::/8 prefix || HKDF(land_secret, visitor_route_pubkey,
-                                  "p2psite/visitor-vip/v1", 16)[...]
+                                  "free-as-a-bird/visitor-vip/v1", 16)[...]
 
 The visitor proves ownership of `visitor_route_pubkey` by signing the
 rendezvous cookie. So the same visitor is stable within one land, and two

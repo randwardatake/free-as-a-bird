@@ -12,7 +12,7 @@ import (
 	"github.com/libp2p/go-libp2p/core/network"
 	"github.com/libp2p/go-libp2p/core/peer"
 
-	"github.com/randwardatake/p2psite/internal/route"
+	"github.com/randwardatake/free-as-a-bird/internal/route"
 )
 
 // This file drives internal/route over libp2p streams: the relay side

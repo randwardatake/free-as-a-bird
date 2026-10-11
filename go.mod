@@ -1,4 +1,4 @@
-module github.com/randwardatake/p2psite
+module github.com/randwardatake/free-as-a-bird
 
 go 1.27.1
 
